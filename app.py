@@ -33,7 +33,7 @@ def main():
         research. This systematic review aims to describe the characteristics and examine the quality of 
         clinical and biomedical research in Malaysia and Indonesia (other country could participate in the same manner).
 
-        **Methods**  
+        **Methods**
         A search was conducted in PubMed, Cochrane Library, CINAHL and PsycINFO to identify for published clinical 
         and biomedical research from 1962 to 2019 from Malaysia. Additional search will also be 
         conducted in MyMedR. Studies that were identified from the databases will be independently 
@@ -47,6 +47,7 @@ def main():
         others will be explored.
 
         **Results**
+        
         Of 4513 articles, 1078 were included in this qualitative synthesis (https://rb.gy/zjwr8d). Dataset that is made
         available here was the results from the Malaysian primary care setting, the search strategy is available here (https://rb.gy/jd91ey).
         Malaysian colleagues and those whose studies and papers have been included or not included in the dataset are welcomed to check out
