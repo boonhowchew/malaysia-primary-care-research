@@ -6,7 +6,7 @@ import seaborn as sns
 @st.cache_data
 def load_data():
     # Replace this with your raw CSV URL
-    url = "https://raw.githubusercontent.com/your_username/malaysia-primary-care-research/main/REALQUAMI_Dataset_Merged.csv"
+    url = "https://raw.githubusercontent.com/boonhowchew/malaysia-primary-care-research/main/REALQUAMI_Dataset_Merged.csv"
     df = pd.read_csv(url)
     df['IDyear'] = pd.to_numeric(df['IDyear'], errors='coerce')
     df['Period'] = df['IDyear'].apply(lambda x: 'Early (1962-1999)' if x < 2000 else 'Recent (2000-2019)')
