@@ -31,7 +31,7 @@ def main():
         researches are detrimental to the health of the people and healthcare performance with misleading clinical 
         evidence. Efforts to improve research performance will need good data on the profiles and performance of past 
         research. This systematic review aims to describe the characteristics and examine the quality of 
-        clinical and biomedical research in the primary care setting in Malaysia.
+        clinical and biomedical research in Malaysia and Indonesia (other country could participate in the same manner).
 
         **Methods**  
         A search will be conducted in PubMed, Cochrane Library, CINAHL and PsycINFO to identify for published clinical 
@@ -45,6 +45,13 @@ def main():
         be analysed. The independent effect of each of the determinant will be quantified in multivariable regression 
         analysis. Longitudinal trends of the research characteristics, health conditions studied and settings, among 
         others will be explored.
+
+        **Results**
+        Of 4513 articles, 1078 were included in this qualitative synthesis (https://rb.gy/zjwr8d). Dataset that is made
+        available here was the results from the Malaysian primary care setting, the search strategy is available here (https://rb.gy/jd91ey).
+        Malaysian colleagues and those whose studies and papers have been included or not included in the dataset are welcomed to check out
+        the dataset, to clean the entries and to add to it if the papers are deem eligible based on criteria and search strategy.
+        Other research-related outputs at primary care setting will be added in near future once this plarform works well.
 
         **Discussion**  
         Results of this study will serve as the 'baseline' data for future evaluation and within the country and between 
