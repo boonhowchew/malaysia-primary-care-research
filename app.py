@@ -34,9 +34,9 @@ def main():
         clinical and biomedical research in Malaysia and Indonesia (other country could participate in the same manner).
 
         **Methods**  
-        A search will be conducted in PubMed, Cochrane Library, CINAHL and PsycINFO to identify for published clinical 
-        and biomedical research from 1962 to 2019 from Malaysia and/or Indonesia. Additional search will also be 
-        conducted in MyMedR (Malaysian only). Studies that were identified from the databases will be independently 
+        A search was conducted in PubMed, Cochrane Library, CINAHL and PsycINFO to identify for published clinical 
+        and biomedical research from 1962 to 2019 from Malaysia. Additional search will also be 
+        conducted in MyMedR. Studies that were identified from the databases will be independently 
         screened by a team of reviewers, relevant information will be extracted and the quality of articles will be 
         assessed. In Phase 1, the characteristics of the research including the profiles of the researchers and the 
         journals in which they are published will be reported descriptively. In Phase 2, a research quality screening 
@@ -52,6 +52,8 @@ def main():
         Malaysian colleagues and those whose studies and papers have been included or not included in the dataset are welcomed to check out
         the dataset, to clean the entries and to add to it if the papers are deem eligible based on criteria and search strategy.
         Other research-related outputs at primary care setting will be added in near future once this plarform works well.
+        Phase 2 of the project may be conducted with artificial intelligence. Some preliminary results have been generated with
+        ChatGPT Deep Research model. They are to be validated and verified.
 
         **Discussion**  
         Results of this study will serve as the 'baseline' data for future evaluation and within the country and between 
