@@ -24,7 +24,7 @@ def main():
     # ---------------------
     with st.expander("Project Synopsis"):
         st.markdown("""
-        **Background**  
+        **Background**
         The research landscape that encompass study designs, execution processes, and resulting outputs can evolve 
         in numerous ways, reflecting shifts in priorities, innovations, and the impact of external influences on its 
         enterprises. Much research waste has been increasingly reported. Poorly conducted clinical and biomedical 
@@ -47,7 +47,6 @@ def main():
         others will be explored.
 
         **Results**
-        
         Of 4513 articles, 1078 were included in this qualitative synthesis (https://rb.gy/zjwr8d). Dataset that is made
         available here was the results from the Malaysian primary care setting, the search strategy is available here (https://rb.gy/jd91ey).
         Malaysian colleagues and those whose studies and papers have been included or not included in the dataset are welcomed to check out
@@ -56,7 +55,7 @@ def main():
         Phase 2 of the project may be conducted with artificial intelligence. Some preliminary results have been generated with
         ChatGPT Deep Research model. They are to be validated and verified.
 
-        **Discussion**  
+        **Discussion**
         Results of this study will serve as the 'baseline' data for future evaluation and within the country and between 
         countries comparison. This review may also provide informative results to a diverse range of stakeholders 
         including researchers, academics, funding agencies, academic institutions, policymakers, industry partners, 
@@ -66,13 +65,13 @@ def main():
         initiatives. Additionally, information on health conditions, research settings, and whether they are over- or 
         under-studied may help future prioritization of research initiatives and resources.
 
-        **Registration**  
+        **Registration**
         PROSPERO 2020, CRD42020152907, available from: 
         [https://www.crd.york.ac.uk/prospero/display_record.php?ID=CRD42020152907](https://www.crd.york.ac.uk/prospero/display_record.php?ID=CRD42020152907),  
         and Open Science Framework’s registry for Research on the Responsible Conduct of Research, 
         available from: [https://osf.io/w85ce](https://osf.io/w85ce).
 
-        **Keywords**: Systematic Review; Clinical Research; Biomedical Research; Research Characteristics; 
+        **Keywords**:Systematic Review; Clinical Research; Biomedical Research; Research Characteristics; 
         Research Quality; Malaysia; Indonesia
         """)
 
