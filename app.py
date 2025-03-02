@@ -7,26 +7,8 @@ import plotly.express as px
 import base64
 import os
 
-# NEW IMPORT for the iframe approach
-import streamlit.components.v1 as components
-
 # Must be the first Streamlit command:
 st.set_page_config(layout="wide")
-
-# -----------------------------------------------------------------------------
-# Alternative PDF display function using st.components.v1.iframe
-# -----------------------------------------------------------------------------
-def display_pdf_iframe(file_path, height=600, width=700):
-    """
-    Reads a PDF file, encodes it in base64, and embeds it in an iframe using st.components.v1.iframe.
-    """
-    try:
-        with open(file_path, "rb") as f:
-            base64_pdf = base64.b64encode(f.read()).decode('utf-8')
-        pdf_data_uri = f"data:application/pdf;base64,{base64_pdf}"
-        components.iframe(pdf_data_uri, height=height, width=width)
-    except Exception as e:
-        st.error(f"Error displaying PDF: {e}")
 
 # -----------------------------------------------------------------------------
 # Helper Function: Store Visitor Registration Data
@@ -180,9 +162,8 @@ with st.expander("Project Team Members"):
         - Indah S. Widyahening; [indah_widyahening@ui.ac.id](mailto:indah_widyahening@ui.ac.id) – Department of Community Medicine, Universitas Indonesia
         """)
 
-st.markdown("### PRISMA Flow Diagram")
-pdf_url = "https://raw.githubusercontent.com/boonhowchew/malaysia-primary-care-research/main/PRISMA%202009%20flow%20diagram-REALQUAMI%20Primary%20Care_shaun.pdf"
-components.iframe(pdf_url, height=600, width=700)
+st.markdown("### Flow Chart")
+st.image("PRISMA_Flow_Chart.png", caption="PRISMA Flow Chart", use_container_width=True)
 
 st.subheader("Dataset Overview")
 st.write(f"Total Publications: {len(df)}")
