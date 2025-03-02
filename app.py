@@ -180,13 +180,13 @@ if __name__ == "__main__":
     )
     # Label each bar with its count
     for p in ax2.patches:
-    width = p.get_width()
-    if width > 0:
-        ax2.annotate(
-            f"{int(width)}",
-            (width, p.get_y() + p.get_height()/2),
-            ha='left', va='center'
-        )
+        width = p.get_width()
+        if width > 0:
+            ax2.annotate(
+                f"{int(width)}",
+                (width, p.get_y() + p.get_height()/2),
+                ha='left', va='center'
+            )
     total_rows = len(df)
     ax2.set_title(f"Histogram of CA Specialty [Total: {total_rows}]")
     ax2.set_xlabel("Count of Studies")
