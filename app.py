@@ -328,5 +328,11 @@ if st.session_state["registered"]:
             file_name="Caspecialty_Histogram.png",
             mime="image/png"
         )
-    with open(f"{folder_path}/LineGraph_TotalCounts.png", "rb
+    with open(f"{folder_path}/LineGraph_TotalCounts.png", "rb") as file_chart:
+        st.download_button(
+            label="Download Line Graph Total Counts",
+            data=file_chart,
+            file_name="LineGraph_TotalCounts.png",
+            mime="image/png"
+        )
 
