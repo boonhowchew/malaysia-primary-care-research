@@ -17,6 +17,11 @@ def load_data():
     df['IDyear'] = pd.to_numeric(df['IDyear'], errors='coerce').astype(int)
     return df
 
+def main():
+    st.title("Malaysian Primary Care Research Dashboard")
+    st.write("This dashboard updates automatically whenever the dataset on GitHub is updated.")
+
+# Load your dataset
 df = load_data()
 
 # ---------------------
@@ -271,9 +276,8 @@ folder_path = "/Users/mygoddess/Desktop/Research Integrity/REALQUAMI/Datasets/ch
 fig1.savefig(f"{folder_path}/Annual_Publication_Trend_Histogram.png", dpi=300, bbox_inches='tight')
 fig2.savefig(f"{folder_path}/Caspecialty_Histogram.png", dpi=300, bbox_inches='tight')
 fig3.savefig(f"{folder_path}/LineGraph_TotalCounts.png", dpi=300, bbox_inches='tight')
-fig4.savefig(f"{folder_path}/Journal_Locality_and_Scope_SunburstChart.png", dpi=300, bbox_inches='tight')
 # For Plotly, if Kaleido is installed, you can save the sunburst chart as an image:
-# fig4.write_image(f"{folder_path}/Journal_Sunburst.png", scale=2)
+# fig4.write_image(f"{folder_path}/Journal_Locality_and_Scope_SunburstChart.png", scale=2)
 
 df.to_csv(f"{folder_path}/REALQUAMI_Dataset_Cleansed.csv", index=False)
 
