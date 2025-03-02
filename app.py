@@ -271,6 +271,7 @@ folder_path = "/Users/mygoddess/Desktop/Research Integrity/REALQUAMI/Datasets/ch
 fig1.savefig(f"{folder_path}/Annual_Publication_Trend_Histogram.png", dpi=300, bbox_inches='tight')
 fig2.savefig(f"{folder_path}/Caspecialty_Histogram.png", dpi=300, bbox_inches='tight')
 fig3.savefig(f"{folder_path}/LineGraph_TotalCounts.png", dpi=300, bbox_inches='tight')
+fig4.savefig(f"{folder_path}/Journal_Locality_and_Scope_SunburstChart.png", dpi=300, bbox_inches='tight')
 # For Plotly, if Kaleido is installed, you can save the sunburst chart as an image:
 # fig4.write_image(f"{folder_path}/Journal_Sunburst.png", scale=2)
 
@@ -304,10 +305,10 @@ with open(f"{folder_path}/LineGraph_TotalCounts.png", "rb") as file_chart:
          mime="image/png"
     )
 
-with open(f"{folder_path}/REALQUAMI_Dataset_Cleansed.csv", "rb") as file_csv:
+with open(f"{folder_path}/Journal_Locality_and_Scope_SunburstChart.png", "rb") as file_chart:
     st.download_button(
-         label="Download Cleaned Dataset CSV",
+         label="Download Multilayer Pie Chart",
          data=file_csv,
-         file_name="REALQUAMI_Dataset_Cleansed.csv",
+         file_name="Journal_Locality_and_Scope_SunburstChart.png",
          mime="text/csv"
     )
