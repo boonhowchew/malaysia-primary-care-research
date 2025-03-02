@@ -322,7 +322,7 @@ st.image(
 # -----------------------------------------------------------------------------
 # SAVE CHARTS & CLEANED DATASET TO THE DESIGNATED FOLDER
 # -----------------------------------------------------------------------------
-folder_path = "/Users/mygoddess/Desktop/Research Integrity/REALQUAMI/Datasets/charts"
+folder_path = "charts"
 if not os.path.exists(folder_path):
     os.makedirs(folder_path)
 
