@@ -163,7 +163,7 @@ with st.expander("Project Team Members"):
         """)
 
 st.markdown("### Flow Chart")
-st.image("PRISMA_Flow_Chart.png", caption="PRISMA Flow Chart", use_container_width=True)
+st.image("Flow.png", caption="PRISMA Flow Chart", use_container_width=True)
 
 st.subheader("Dataset Overview")
 st.write(f"Total Publications: {len(df)}")
