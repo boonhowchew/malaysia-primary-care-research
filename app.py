@@ -181,9 +181,8 @@ with st.expander("Project Team Members"):
         """)
 
 st.markdown("### PRISMA Flow Diagram")
-# Use the alternative iframe method to display the PDF from the local file
-pdf_file_path = "PRISMA 2009 flow diagram-REALQUAMI Primary Care_shaun.pdf"
-display_pdf_iframe(pdf_file_path, height=600, width=700)
+pdf_url = "https://raw.githubusercontent.com/boonhowchew/malaysia-primary-care-research/main/PRISMA%202009%20flow%20diagram-REALQUAMI%20Primary%20Care_shaun.pdf"
+components.iframe(pdf_url, height=600, width=700)
 
 st.subheader("Dataset Overview")
 st.write(f"Total Publications: {len(df)}")
