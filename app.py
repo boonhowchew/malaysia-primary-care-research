@@ -7,20 +7,26 @@ import plotly.express as px
 import base64
 import os
 
+# NEW IMPORT for the iframe approach
+import streamlit.components.v1 as components
+
 # Must be the first Streamlit command:
 st.set_page_config(layout="wide")
 
 # -----------------------------------------------------------------------------
-# Helper Function: Display PDF in an embedded iframe
+# Alternative PDF display function using st.components.v1.iframe
 # -----------------------------------------------------------------------------
-def display_pdf(file_path, height=600, width=700):
+def display_pdf_iframe(file_path, height=600, width=700):
     """
-    Reads a PDF file, encodes it in base64, and displays it as an HTML iframe.
+    Reads a PDF file, encodes it in base64, and embeds it in an iframe using st.components.v1.iframe.
     """
-    with open(file_path, "rb") as f:
-        base64_pdf = base64.b64encode(f.read()).decode('utf-8')
-    pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="{width}" height="{height}" type="application/pdf"></iframe>'
-    st.markdown(pdf_display, unsafe_allow_html=True)
+    try:
+        with open(file_path, "rb") as f:
+            base64_pdf = base64.b64encode(f.read()).decode('utf-8')
+        pdf_data_uri = f"data:application/pdf;base64,{base64_pdf}"
+        components.iframe(pdf_data_uri, height=height, width=width)
+    except Exception as e:
+        st.error(f"Error displaying PDF: {e}")
 
 # -----------------------------------------------------------------------------
 # Helper Function: Store Visitor Registration Data
@@ -187,7 +193,7 @@ with st.expander("Project Team Members"):
 # Display PRISMA Flow Diagram PDF
 pdf_file_path = "PRISMA 2009 flow diagram-REALQUAMI Primary Care_shaun.pdf"
 st.markdown("### PRISMA Flow Diagram")
-display_pdf(pdf_file_path, height=600, width=700)
+display_pdf_iframe(pdf_file_path, height=600, width=700)
 
 # -----------------------------------------------------------------------------
 # Dataset Overview & Invitation
