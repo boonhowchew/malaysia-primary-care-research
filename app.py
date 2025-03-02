@@ -7,13 +7,12 @@ import plotly.express as px
 import base64
 import os
 
-
 # Must be the first Streamlit command:
 st.set_page_config(layout="wide")
 
-# ---------------------
+# -----------------------------------------------------------------------------
 # Helper Function: Display PDF in an embedded iframe
-# ---------------------
+# -----------------------------------------------------------------------------
 def display_pdf(file_path, height=600, width=700):
     """
     Reads a PDF file, encodes it in base64, and displays it as an HTML iframe.
@@ -23,9 +22,9 @@ def display_pdf(file_path, height=600, width=700):
     pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="{width}" height="{height}" type="application/pdf"></iframe>'
     st.markdown(pdf_display, unsafe_allow_html=True)
 
-# ---------------------
+# -----------------------------------------------------------------------------
 # Helper Function: Store Visitor Registration Data
-# ---------------------
+# -----------------------------------------------------------------------------
 def store_visitor_data(data):
     """
     Append visitor data (dictionary) to a CSV file stored in the repository folder.
@@ -39,9 +38,9 @@ def store_visitor_data(data):
         df_new = pd.DataFrame([data])
         df_new.to_csv(csv_file, index=False)
 
-# ---------------------
+# -----------------------------------------------------------------------------
 # Load Data (cached)
-# ---------------------
+# -----------------------------------------------------------------------------
 @st.cache_data
 def load_data():
     # Replace with the raw URL to your CSV on GitHub
@@ -54,9 +53,9 @@ def load_data():
 
 df = load_data()
 
-# ---------------------
+# -----------------------------------------------------------------------------
 # Sidebar: Registration Form & Analytics (if desired)
-# ---------------------
+# -----------------------------------------------------------------------------
 if "registered" not in st.session_state:
     st.session_state["registered"] = False
 
@@ -74,7 +73,7 @@ if not st.session_state["registered"]:
         )
         consent = st.checkbox("I agree to the terms of use and consent to provide my personal data.")
         submitted = st.form_submit_button("Submit Registration")
-    
+
     if submitted:
         if not (first_name and last_name and email and consent):
             st.sidebar.error("Please fill in first name, last name, email and agree to the terms.")
@@ -96,9 +95,9 @@ else:
     st.sidebar.write("Total Visitors: (to be implemented)")
     st.sidebar.write("Registered Visitors: (to be implemented)")
 
-# ---------------------
+# -----------------------------------------------------------------------------
 # Main Page Content
-# ---------------------
+# -----------------------------------------------------------------------------
 st.title("Malaysian Primary Care Research Dashboard")
 st.write("This dashboard updates automatically whenever the dataset on GitHub is updated.")
 
@@ -175,9 +174,9 @@ st.markdown("### PRISMA Flow Diagram")
 pdf_file_path = "PRISMA 2009 flow diagram-REALQUAMI Primary Care_shaun.pdf"
 display_pdf(pdf_file_path, height=600, width=700)
 
-# ---------------------
+# -----------------------------------------------------------------------------
 # Dataset Overview & Invitation
-# ---------------------
+# -----------------------------------------------------------------------------
 st.subheader("Dataset Overview")
 st.write(f"Total Publications: {len(df)}")
 st.dataframe(df.head(10))
@@ -193,7 +192,7 @@ if st.session_state["registered"]:
     - **Metadata Explanation**: [Link Here](https://drive.google.com/file/d/1aPG4fBL0T0YdNIxMUpKhpB7J2rbK81d0/view?usp=share_link)
     """
 else:
-    # For unregistered visitors, disable links and show tooltip via HTML title attributes
+    # For unregistered visitors, disable links and show tooltip
     invitation_markdown = """
     **Invitation to Contribute**  
     We invite you to explore and refine the dataset for improved accuracy and completeness.  
@@ -205,9 +204,9 @@ else:
     """
 st.markdown(invitation_markdown, unsafe_allow_html=True)
 
-# ---------------------
+# -----------------------------------------------------------------------------
 # Data Cleaning for CA Specialty
-# ---------------------
+# -----------------------------------------------------------------------------
 df['Caspecialty'] = df['Caspecialty'].astype(str).str.strip()
 df['Caspecialty'] = df['Caspecialty'].replace({
     'nan': 'Unknown', 'NaN': 'Unknown', '': 'Unknown', 'Not stated': 'Unknown'
@@ -225,9 +224,9 @@ if 'Unknown' in cat_list:
     cat_list.remove('Unknown')
     cat_list.append('Unknown')
 
-# ---------------------
+# -----------------------------------------------------------------------------
 # Data Cleaning for Journal Hierarchy (for Sunburst)
-# ---------------------
+# -----------------------------------------------------------------------------
 hierarchy_cols = ['JournalLoc', 'JournalScop']
 for col in hierarchy_cols:
     df[col] = df[col].fillna("Unknown")
@@ -237,9 +236,9 @@ for col in hierarchy_cols:
 df['JournalLoc_short'] = df['JournalLoc'].apply(lambda x: x if len(x) <= 15 else x[:10] + "...")
 df['JournalScop_short'] = df['JournalScop'].apply(lambda x: x if len(x) <= 15 else x[:10] + "...")
 
-# ---------------------
+# -----------------------------------------------------------------------------
 # 1. HISTOGRAM: Annual Publication Trend
-# ---------------------
+# -----------------------------------------------------------------------------
 min_year = df['IDyear'].min()
 max_year = df['IDyear'].max()
 fig1, ax1 = plt.subplots(figsize=(6,4))
@@ -250,9 +249,9 @@ ax1.set_ylabel("Number of Publications")
 plt.tight_layout()
 st.pyplot(fig1)
 
-# ---------------------
+# -----------------------------------------------------------------------------
 # 2. HORIZONTAL BAR CHART: CA Specialty
-# ---------------------
+# -----------------------------------------------------------------------------
 fig2, ax2 = plt.subplots(figsize=(8,6))
 sns.countplot(y='Caspecialty', data=df, order=cat_list, ax=ax2)
 for p in ax2.patches:
@@ -266,9 +265,9 @@ ax2.set_ylabel("CA Specialty")
 plt.tight_layout()
 st.pyplot(fig2)
 
-# ---------------------
+# -----------------------------------------------------------------------------
 # 3. LINE GRAPH: Total Counts by Publication Year
-# ---------------------
+# -----------------------------------------------------------------------------
 df_line = df.groupby('IDyear')[['AuthorNum', 'InstitNum', 'AuthorOvNum', 'InstitOvNum']].sum().reset_index()
 fig3, ax3 = plt.subplots(figsize=(8,5))
 for col in ['AuthorNum', 'InstitNum', 'AuthorOvNum', 'InstitOvNum']:
@@ -280,9 +279,9 @@ ax3.legend()
 plt.tight_layout()
 st.pyplot(fig3)
 
-# ---------------------
+# -----------------------------------------------------------------------------
 # 4. SUNBURST CHART: Journal Locality and Scope
-# ---------------------
+# -----------------------------------------------------------------------------
 fig4 = px.sunburst(
     df,
     path=['JournalLoc_short', 'JournalScop_short'],
@@ -295,9 +294,9 @@ fig4.update_traces(
 )
 st.plotly_chart(fig4)
 
-# ---------------------
+# -----------------------------------------------------------------------------
 # SAVE CHARTS & CLEANED DATASET TO THE DESIGNATED FOLDER
-# ---------------------
+# -----------------------------------------------------------------------------
 folder_path = "/Users/mygoddess/Desktop/Research Integrity/REALQUAMI/Datasets/charts"
 if not os.path.exists(folder_path):
     os.makedirs(folder_path)
@@ -305,38 +304,29 @@ if not os.path.exists(folder_path):
 fig1.savefig(f"{folder_path}/Annual_Publication_Trend_Histogram.png", dpi=300, bbox_inches='tight')
 fig2.savefig(f"{folder_path}/Caspecialty_Histogram.png", dpi=300, bbox_inches='tight')
 fig3.savefig(f"{folder_path}/LineGraph_TotalCounts.png", dpi=300, bbox_inches='tight')
-# For Plotly, if Kaleido is installed, you can save the sunburst chart as an image:
+# If Kaleido is installed, you can also save the Plotly chart:
 # fig4.write_image(f"{folder_path}/Journal_Locality_and_Scope_SunburstChart.png", scale=2)
 
 df.to_csv(f"{folder_path}/REALQUAMI_Dataset_Cleansed.csv", index=False)
 
-# ---------------------
+# -----------------------------------------------------------------------------
 # DOWNLOAD BUTTONS: Only if Registered
-# ---------------------
+# -----------------------------------------------------------------------------
 if st.session_state["registered"]:
     st.markdown("## Download Files")
     with open(f"{folder_path}/Annual_Publication_Trend_Histogram.png", "rb") as file_chart:
         st.download_button(
-             label="Download Annual Publication Trend Histogram",
-             data=file_chart,
-             file_name="Annual_Publication_Trend_Histogram.png",
-             mime="image/png"
+            label="Download Annual Publication Trend Histogram",
+            data=file_chart,
+            file_name="Annual_Publication_Trend_Histogram.png",
+            mime="image/png"
         )
     with open(f"{folder_path}/Caspecialty_Histogram.png", "rb") as file_chart:
         st.download_button(
-             label="Download CA Specialty Histogram",
-             data=file_chart,
-             file_name="Caspecialty_Histogram.png",
-             mime="image/png"
+            label="Download CA Specialty Histogram",
+            data=file_chart,
+            file_name="Caspecialty_Histogram.png",
+            mime="image/png"
         )
-    with open(f"{folder_path}/LineGraph_TotalCounts.png", "rb") as file_chart:
-        st.download_button(
-             label="Download Line Graph Total Counts",
-             data=file_chart,
-             file_name="LineGraph_TotalCounts.png",
-             mime="image/png"
-        )
-    # Note: We have removed the download button for the cleaned CSV dataset.
-    
-if __name__ == "__main__":
+    with open(f"{folder_path}/LineGraph_TotalCounts.png", "rb
 
