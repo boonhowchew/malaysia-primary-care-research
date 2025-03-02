@@ -50,7 +50,7 @@ def store_visitor_data(data):
 @st.cache_data
 def load_data():
     # Replace with the raw URL to your CSV on GitHub
-    url = "https://raw.githubusercontent.com/boonhowchew/malaysia-primary-care-research/main/REALQUAMI_Dataset_Merged.csv"
+    url = "https://github.com/boonhowchew/malaysia-primary-care-research/blob/main/PRISMA%202009%20flow%20diagram-REALQUAMI%20Primary%20Care_shaun.pdf"
     df = pd.read_csv(url)
     # Ensure IDyear is numeric, drop missing years, and convert to int
     df = df.dropna(subset=['IDyear']).copy()
