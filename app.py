@@ -5,14 +5,17 @@ import seaborn as sns
 import numpy as np
 import plotly.express as px
 
-@st.cache_data
-def load_data():
-    # Replace with your actual raw CSV URL
-    url = "https://raw.githubusercontent.com/boonhowchew/malaysia-primary-care-research/main/REALQUAMI_Dataset_Merged.csv"
-    df = pd.read_csv(url)
-    df['IDyear'] = pd.to_numeric(df['IDyear'], errors='coerce').astype(int)
-    df['Period'] = df['IDyear'].apply(lambda x: 'Early (1962-1999)' if x < 2000 else 'Recent (2000-2019)')
-    return df
+    # ---------------------
+    # Cache the data load so it doesn't reload on every change
+    @st.cache_data
+    def load_data():
+        # Replace with the raw URL to your CSV on GitHub
+        url = "https://raw.githubusercontent.com/boonhowchew/malaysia-primary-care-research/main/REALQUAMI_Dataset_Merged.csv"
+        df = pd.read_csv(url)
+        # Ensure IDyear is numeric, drop missing years, and convert to int
+        df = df.dropna(subset=['IDyear']).copy()
+        df['IDyear'] = pd.to_numeric(df['IDyear'], errors='coerce').astype(int)
+        return df
 
 def main():
     st.title("Malaysian Primary Care Research Dashboard")
@@ -155,18 +158,61 @@ def main():
     Thank you for contributing to a more comprehensive and accurate dataset!
     """)
 
-    # (Optional) Example Chart
-    st.markdown("### Annual Publication Trend")
-    pub_trend = df.groupby('IDyear').size().reset_index(name='Count')
-    fig, ax = plt.subplots(figsize=(10, 6))
-    sns.lineplot(data=pub_trend, x='IDyear', y='Count', marker='o', ax=ax)
-    ax.set_title("Annual Publication Trend")
-    ax.set_xlabel("Publication Year")
-    ax.set_ylabel("Number of Studies")
-    st.pyplot(fig)
+    # ---------------------
+    # Data Cleaning for CA Specialty
+    # ---------------------
+    df['Caspecialty'] = df['Caspecialty'].astype(str).str.strip()
+    df['Caspecialty'] = df['Caspecialty'].replace({
+        'nan': 'Unknown', 'NaN': 'Unknown', '': 'Unknown', 'Not stated': 'Unknown'
+    })
+    df['Caspecialty'] = df['Caspecialty'].str.lower()
+    df['Caspecialty'] = df['Caspecialty'].replace({
+        'family medicine': 'Family medicine',
+        'eye': 'Eye',
+        'unknown': 'Unknown'
+    })
+    # Compute category order (descending count) and move 'Unknown' to the end
+    counts = df['Caspecialty'].value_counts()
+    counts = counts[counts > 0]
+    cat_list = list(counts.index)
+    if 'Unknown' in cat_list:
+        cat_list.remove('Unknown')
+        cat_list.append('Unknown')
 
-if __name__ == "__main__":
-    main()
+    # ---------------------
+    # Data Cleaning for Journal Hierarchy (for Sunburst)
+    # ---------------------
+    # We'll use JournalLoc and JournalScop only.
+    hierarchy_cols = ['JournalLoc', 'JournalScop']
+    for col in hierarchy_cols:
+        df[col] = df[col].fillna("Unknown")
+        df[col] = df[col].replace(r'^\s*$', "Unknown", regex=True)
+        df[col] = df[col].str.strip().str.title()
+
+    # Create shorter labels for display
+    # (Adjust the truncation logic as needed)
+    df['JournalLoc_short'] = df['JournalLoc'].apply(lambda x: x if len(x) <= 15 else x[:10] + "...")
+    df['JournalScop_short'] = df['JournalScop'].apply(lambda x: x if len(x) <= 15 else x[:10] + "...")
+
+    # ---------------------
+    # 1. HISTOGRAM: Annual Publication Trend
+    # ---------------------
+    min_year = df['IDyear'].min()
+    max_year = df['IDyear'].max()
+
+    fig1, ax1 = plt.subplots(figsize=(6,4))
+    sns.histplot(
+        data=df,
+        x='IDyear',
+        bins=range(min_year, max_year+1),
+        kde=False,
+        ax=ax1
+    )
+    ax1.set_title("Annual Publication Trend (Histogram)")
+    ax1.set_xlabel("Publication Year")
+    ax1.set_ylabel("Number of Publications")
+    plt.tight_layout()
+    st.pyplot(fig1)
 
     # ---------------------
     # 2. HORIZONTAL BAR CHART: CA Specialty
