@@ -314,9 +314,9 @@ st.plotly_chart(fig4)
 # -----------------------------------------------------------------------------
 st.markdown("### Additional Overview of Research Characteristics")
 st.image(
-    "six_combined_charts.png",    # <-- Replace with your actual image file name
+    "Six_Histograms_Combined.png",    # <-- Replace with your actual image file name
     caption="Six Histograms of Article Type, Field of Study, Study Design, Level of Study, Quant Study Type, and Data Collection Methods",
-    use_column_width=True
+    use_container_width=True
 )
 
 # -----------------------------------------------------------------------------
