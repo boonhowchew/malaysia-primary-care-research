@@ -185,8 +185,8 @@ with st.expander("Project Team Members"):
         """)
 
 # Display PRISMA Flow Diagram PDF
-st.markdown("### PRISMA Flow Diagram")
 pdf_file_path = "PRISMA 2009 flow diagram-REALQUAMI Primary Care_shaun.pdf"
+st.markdown("### PRISMA Flow Diagram")
 display_pdf(pdf_file_path, height=600, width=700)
 
 # -----------------------------------------------------------------------------
