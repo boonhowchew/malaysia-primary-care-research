@@ -19,11 +19,11 @@ def load_data():
 
 df = load_data()
 
-    # ---------------------
-    # 1. Project Synopsis (Background, Methods, Discussion, Registration)
-    # ---------------------
-    with st.expander("Project Synopsis"):
-        st.markdown("""
+# ---------------------
+# 1. Project Synopsis (Background, Methods, Discussion, Registration)
+# ---------------------
+with st.expander("Project Synopsis"):
+    st.markdown("""
         **Background**
         The research landscape that encompass study designs, execution processes, and resulting outputs can evolve 
         in numerous ways, reflecting shifts in priorities, innovations, and the impact of external influences on its 
@@ -75,11 +75,11 @@ df = load_data()
         Research Quality; Malaysia; Indonesia
         """)
 
-    # ---------------------
-    # 2. Project Team Members
-    # ---------------------
-    with st.expander("Project Team Members"):
-        st.markdown("""
+# ---------------------
+# 2. Project Team Members
+# ---------------------
+with st.expander("Project Team Members"):
+    st.markdown("""
         **Project Lead**  
         Boon-How Chew, Department of Family Medicine, Faculty of Medicine & Health Sciences, Universiti Putra Malaysia, 
         43400 Serdang, Selangor, Malaysia.  
@@ -132,15 +132,15 @@ df = load_data()
           Department of Community Medicine, Faculty of Medicine, Universitas Indonesia, Jakarta, Indonesia
         """)
 
-    # ---------------------
-    # Example: Simple Dataset Overview
-    # ---------------------
-    st.subheader("Dataset Overview")
-    st.write(f"Total Publications: {len(df)}")
-    st.dataframe(df.head(10))
+# ---------------------
+# Example: Simple Dataset Overview
+# ---------------------
+st.subheader("Dataset Overview")
+st.write(f"Total Publications: {len(df)}")
+st.dataframe(df.head(10))
 
-    # Add a short invitation note under the dataset overview
-    st.markdown("""
+# Add a short invitation note under the dataset overview
+st.markdown("""
     **Invitation to Contribute**  
     We invite you to explore and refine the dataset for improved accuracy and completeness. 
     If you notice any papers that should be included, or if existing entries need correction, 
