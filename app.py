@@ -54,6 +54,26 @@ def load_data():
 df = load_data()
 
 # -----------------------------------------------------------------------------
+# Visitor Analytics: Update and Display Counts
+# -----------------------------------------------------------------------------
+# (This is a simple file-based counter. Note that this will increment on every app reload.)
+counter_file = "visitor_count.txt"
+try:
+    with open(counter_file, "r") as f:
+        total_visitors = int(f.read().strip())
+except:
+    total_visitors = 0
+total_visitors += 1
+with open(counter_file, "w") as f:
+    f.write(str(total_visitors))
+
+# Count registered visitors from visitor_data.csv (if it exists)
+if os.path.exists("visitor_data.csv"):
+    registered_visitors = pd.read_csv("visitor_data.csv").shape[0]
+else:
+    registered_visitors = 0
+
+# -----------------------------------------------------------------------------
 # Sidebar: Registration Form & Analytics (if desired)
 # -----------------------------------------------------------------------------
 if "registered" not in st.session_state:
@@ -89,11 +109,6 @@ if not st.session_state["registered"]:
             st.session_state["registered"] = True
             st.sidebar.success("Registration successful! Reloading page...")
             st.experimental_rerun()
-else:
-    st.sidebar.subheader("Visitor Analytics")
-    # (Optional) Show visitor counts if you maintain them
-    st.sidebar.write("Total Visitors: (to be implemented)")
-    st.sidebar.write("Registered Visitors: (to be implemented)")
 
 # -----------------------------------------------------------------------------
 # Main Page Content
