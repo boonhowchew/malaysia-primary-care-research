@@ -4,6 +4,27 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 import plotly.express as px
+import base64
+import streamlit as st
+
+def display_pdf(file_path, height=600, width=700):
+    """
+    Reads a PDF file from the given file path, encodes it in base64,
+    and returns an HTML iframe to display it in the Streamlit app.
+    
+    Parameters:
+    - file_path: str, path to the PDF file.
+    - height: int, height of the iframe in pixels.
+    - width: int, width of the iframe in pixels.
+    """
+    # Open the file in binary mode
+    with open(file_path, "rb") as f:
+        # Read the file and encode it in base64
+        base64_pdf = base64.b64encode(f.read()).decode('utf-8')
+    # Create an HTML iframe string with the base64 encoded PDF
+    pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="{width}" height="{height}" type="application/pdf"></iframe>'
+    # Use st.markdown to render the HTML. unsafe_allow_html=True is required to render HTML.
+    st.markdown(pdf_display, unsafe_allow_html=True)
 
 # ---------------------
 # Cache the data load so it doesn't reload on every change
@@ -135,6 +156,12 @@ with st.expander("Project Team Members"):
         - Indah S. Widyahening; [indah_widyahening@ui.ac.id](mailto:indah_widyahening@ui.ac.id)  
           Department of Community Medicine, Faculty of Medicine, Universitas Indonesia, Jakarta, Indonesia
         """)
+
+# Display the PRISMA Flow Diagram PDF between sections
+st.markdown("### PRISMA Flow Diagram")
+# Provide the relative path to the PDF file
+pdf_file_path = "PRISMA 2009 flow diagram-REALQUAMI Primary Care_shaun.pdf"
+display_pdf(pdf_file_path, height=600, width=700)
 
 # ---------------------
 # Example: Simple Dataset Overview
