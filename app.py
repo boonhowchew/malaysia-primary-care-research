@@ -146,6 +146,13 @@ st.markdown("""
     If you notice any papers that should be included, or if existing entries need correction, 
     please help us by adding or cleaning entries.
 
+    - **CSV Dataset** (for viewing): [Link Here](https://drive.google.com/file/d/1LS__cmX58gZnZ4uiaYZ4nIslN6HhthuM/view?usp=share_link)
+    - **Excel Google Sheet Dataset** (editable): [Link Here](https://docs.google.com/spreadsheets/d/1XMSbSG-GEi67Pt6HMaDLUE_LjYNvfuoXxIPW_HjZPrc/edit?usp=share_link)
+    - **Metadata Explanation**: [Link Here](https://drive.google.com/file/d/1aPG4fBL0T0YdNIxMUpKhpB7J2rbK81d0/view?usp=share_link)
+
+    Thank you for contributing to a more comprehensive and accurate dataset!
+    """)
+
 
 # ---------------------
 # Data Cleaning for CA Specialty
