@@ -17,9 +17,8 @@ def load_data():
     df['IDyear'] = pd.to_numeric(df['IDyear'], errors='coerce').astype(int)
     return df
 
-def main():
-    st.title("Malaysian Primary Care Research Dashboard")
-    st.write("This dashboard updates automatically whenever the dataset on GitHub is updated.")
+st.title("Malaysian Primary Care Research Dashboard")
+st.write("This dashboard updates automatically whenever the dataset on GitHub is updated.")
 
 # Load your dataset
 df = load_data()
@@ -307,12 +306,4 @@ with open(f"{folder_path}/LineGraph_TotalCounts.png", "rb") as file_chart:
          data=file_chart,
          file_name="LineGraph_TotalCounts.png",
          mime="image/png"
-    )
-
-with open(f"{folder_path}/Journal_Locality_and_Scope_SunburstChart.png", "rb") as file_chart:
-    st.download_button(
-         label="Download Multilayer Pie Chart",
-         data=file_csv,
-         file_name="Journal_Locality_and_Scope_SunburstChart.png",
-         mime="text/csv"
     )
