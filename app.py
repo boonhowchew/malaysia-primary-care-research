@@ -7,6 +7,10 @@ import plotly.express as px
 import base64
 import os
 
+
+# Must be the first Streamlit command:
+st.set_page_config(layout="wide")
+
 # ---------------------
 # Helper Function: Display PDF in an embedded iframe
 # ---------------------
@@ -95,7 +99,6 @@ else:
 # ---------------------
 # Main Page Content
 # ---------------------
-st.set_page_config(layout="wide")
 st.title("Malaysian Primary Care Research Dashboard")
 st.write("This dashboard updates automatically whenever the dataset on GitHub is updated.")
 
@@ -336,4 +339,4 @@ if st.session_state["registered"]:
     # Note: We have removed the download button for the cleaned CSV dataset.
     
 if __name__ == "__main__":
-    st.set_page_config(layout="wide")
+
