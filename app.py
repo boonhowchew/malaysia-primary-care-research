@@ -103,7 +103,7 @@ else:
 # -----------------------------------------------------------------------------
 # Main Page Content
 # -----------------------------------------------------------------------------
-st.title("Malaysian Primary Care Research Dashboard")
+st.title("Malaysian Primary Care Research Dashboard, 1962 to 2019")
 st.write("This dashboard updates automatically whenever the dataset on GitHub is updated.")
 
 with st.expander("Project Synopsis"):
