@@ -239,15 +239,32 @@ ax2.set_ylabel("CA Specialty")
 plt.tight_layout()
 st.pyplot(fig2)
 
-df_line = df.groupby('IDyear')[['AuthorNum', 'InstitNum', 'AuthorOvNum', 'InstitOvNum']].mean().reset_index()
-fig3, ax3 = plt.subplots(figsize=(7,4))
-for col in ['AuthorNum', 'InstitNum', 'AuthorOvNum', 'InstitOvNum']:
-    sns.lineplot(data=df_line, x='IDyear', y=col, marker='o', label=col, ax=ax3)
-ax3.set_title("Mean Counts of Authors, Institutions, Overseas Authors, and Overseas Institutions by Year")
+# -----------------------------------------------------------------------------
+# 3. Smoothed Line Chart: Median ± IQR of AuthorNum by Year
+# -----------------------------------------------------------------------------
+# Group by year and compute median, Q1, and Q3 for AuthorNum
+agg_author = df.groupby('IDyear')['AuthorNum'].agg(
+    median='median',
+    q1=lambda x: x.quantile(0.25),
+    q3=lambda x: x.quantile(0.75),
+    count='count'
+).reset_index()
+
+years = agg_author['IDyear']
+median_values = agg_author['median']
+q1_values = agg_author['q1']
+q3_values = agg_author['q3']
+
+fig3, ax3 = plt.subplots(figsize=(7,5))
+ax3.plot(years, median_values, marker='o', color='steelblue', label='Median AuthorNum')
+ax3.fill_between(years, q1_values, q3_values, color='steelblue', alpha=0.2, label='IQR (25%–75%)')
+ax3.set_title("Median ± IQR of AuthorNum by Year")
 ax3.set_xlabel("Publication Year")
-ax3.set_ylabel("Mean Count per Paper")
+ax3.set_ylabel("Number of Authors per Paper")
 ax3.legend()
 plt.tight_layout()
+
+# Render the new chart in Streamlit
 st.pyplot(fig3)
 
 fig4 = px.sunburst(
