@@ -239,9 +239,24 @@ ax2.set_ylabel("CA Specialty")
 plt.tight_layout()
 st.pyplot(fig2)
 
+
+df_line = df.groupby('IDyear')[['AuthorNum', 'InstitNum', 'AuthorOvNum', 'InstitOvNum']].median().reset_index()
+
+fig3, ax3 = plt.subplots(figsize=(7,4))
+for col in ['AuthorNum', 'InstitNum', 'AuthorOvNum', 'InstitOvNum']:
+    sns.lineplot(data=df_line, x='IDyear', y=col, marker='o', label=col, ax=ax3)
+
+ax3.set_title("Median Authors, Institutions, etc. per Paper by Year")
+ax3.set_xlabel("Publication Year")
+ax3.set_ylabel("Median Count per Paper")
+ax3.legend()
+plt.tight_layout()
+st.pyplot(fig3)
+
 # -----------------------------------------------------------------------------
-# 3. Smoothed Line Chart: Median ± IQR of AuthorNum by Year
+# 4. Smoothed Line Chart: Median ± IQR of AuthorNum by Year
 # -----------------------------------------------------------------------------
+# Instead of sum, use median for a more robust metric
 # Group by year and compute median, Q1, and Q3 for AuthorNum
 agg_author = df.groupby('IDyear')['AuthorNum'].agg(
     median='median',
@@ -255,31 +270,31 @@ median_values = agg_author['median']
 q1_values = agg_author['q1']
 q3_values = agg_author['q3']
 
-fig3, ax3 = plt.subplots(figsize=(7,5))
-ax3.plot(years, median_values, marker='o', color='steelblue', label='Median AuthorNum')
-ax3.fill_between(years, q1_values, q3_values, color='steelblue', alpha=0.2, label='IQR (25%–75%)')
-ax3.set_title("Median ± IQR of AuthorNum by Year")
-ax3.set_xlabel("Publication Year")
-ax3.set_ylabel("Number of Authors per Paper")
-ax3.legend()
+fig4, ax4 = plt.subplots(figsize=(7,5))
+ax4.plot(years, median_values, marker='o', color='steelblue', label='Median AuthorNum')
+ax4.fill_between(years, q1_values, q3_values, color='steelblue', alpha=0.2, label='IQR (25%–75%)')
+ax4.set_title("Median ± IQR of AuthorNum by Year")
+ax4.set_xlabel("Publication Year")
+ax4.set_ylabel("Number of Authors per Paper")
+ax4.legend()
 plt.tight_layout()
 
 # Render the new chart in Streamlit
-st.pyplot(fig3)
+st.pyplot(fig4)
 
-fig4 = px.sunburst(
+fig5 = px.sunburst(
     df,
     path=['JournalLoc_short', 'JournalScop_short'],
     title="Multilayer Pie Chart: Journal Locality and Scope",
     custom_data=['JournalLoc', 'JournalScop']
 )
-fig4.update_traces(
+fig5.update_traces(
     hovertemplate='<b>Journal Loc:</b> %{customdata[0]}<br><b>Journal Scope:</b> %{customdata[1]}<br>Count: %{value}<extra></extra>',
     textinfo="label+percent entry"
 )
 # Enlarge the sunburst chart:
-fig4.update_layout(width=800, height=650)  # Adjust dimensions as needed
-st.plotly_chart(fig4)
+fig5.update_layout(width=800, height=650)  # Adjust dimensions as needed
+st.plotly_chart(fig5)
 
 st.markdown("### Additional Overview of Research Characteristics")
 # -------------------------
@@ -481,7 +496,7 @@ fig1.savefig(f"{folder_path}/Annual_Publication_Trend_Histogram.png", dpi=300, b
 fig2.savefig(f"{folder_path}/Caspecialty_Histogram.png", dpi=300, bbox_inches='tight')
 fig3.savefig(f"{folder_path}/LineGraph_TotalCounts.png", dpi=300, bbox_inches='tight')
 # If Kaleido is installed, you can also save the Plotly chart:
-# fig4.write_image(f"{folder_path}/Journal_Locality_and_Scope_SunburstChart.png", scale=2)
+# fig5.write_image(f"{folder_path}/Journal_Locality_and_Scope_SunburstChart.png", scale=2)
 
 df.to_csv(f"{folder_path}/REALQUAMI_Dataset_Cleansed.csv", index=False)
 
