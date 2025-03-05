@@ -269,6 +269,90 @@ st.image(
     use_container_width=True
 )
 
+# -----------------------------------------------------------------------------
+# 7. MIRROR BAR CHART: Condition_primary vs Condition_secondary
+# -----------------------------------------------------------------------------
+
+# 1. Get frequencies for Condition_primary (descending) and Condition_secondary (descending)
+cond1_counts = df["Condition_primary"].value_counts().sort_values(ascending=False)
+cond2_counts = df["Condition_secondary"].value_counts().sort_values(ascending=False)
+
+# 2. Create a combined index that ensures:
+#    - All categories from Condition_primary in descending order
+#    - Then any extra categories from Condition_secondary appended below
+cond1_index = cond1_counts.index
+cond2_index = cond2_counts.index
+
+extra_cats = cond2_index.difference(cond1_index)  # categories in secondary, not in primary
+extra_cats_sorted = cond2_counts.loc[extra_cats].sort_values(ascending=False).index
+final_index = cond1_index.append(extra_cats_sorted)
+
+# 3. Reindex both counts so they share exactly the same index
+cond1_aligned = cond1_counts.reindex(final_index, fill_value=0)
+cond2_aligned = cond2_counts.reindex(final_index, fill_value=0)
+
+# 4. Convert Condition_secondary to negative for mirroring
+cond2_neg = -cond2_aligned
+
+# 5. Create subplots with sharey=True so subvariable names align
+fig_mirror, axes_mirror = plt.subplots(nrows=1, ncols=2, figsize=(14, 8), sharey=True)
+
+# --- LEFT CHART: Condition_primary ---
+axes_mirror[0].barh(cond1_aligned.index, cond1_aligned.values, color="skyblue", zorder=2)
+axes_mirror[0].set_title(f"Condition_primary (n={cond1_counts.sum()})", fontsize=12)
+axes_mirror[0].set_xlabel("Count")
+axes_mirror[0].invert_yaxis()  # largest category at top
+
+# Annotate each bar
+for patch in axes_mirror[0].patches:
+    width = patch.get_width()
+    y_center = patch.get_y() + patch.get_height()/2
+    axes_mirror[0].annotate(
+        f"{int(width)}",
+        (width, y_center),
+        xytext=(5, 0),
+        textcoords="offset points",
+        va="center", ha="left", fontsize=9
+    )
+
+# --- RIGHT CHART: Condition_secondary (mirrored) ---
+axes_mirror[1].barh(cond2_neg.index, cond2_neg.values, color="salmon", zorder=2)
+axes_mirror[1].set_title(f"Condition_secondary (n={cond2_counts.sum()})", fontsize=12)
+axes_mirror[1].set_xlabel("Count")
+axes_mirror[1].invert_yaxis()  # largest category at top
+axes_mirror[1].yaxis.tick_right()
+axes_mirror[1].yaxis.set_label_position("right")
+
+# Annotate each bar (negative) with absolute count
+for patch in axes_mirror[1].patches:
+    width = patch.get_width()  # negative
+    y_center = patch.get_y() + patch.get_height()/2
+    axes_mirror[1].annotate(
+        f"{int(abs(width))}",
+        (width, y_center),
+        xytext=(-5, 0),
+        textcoords="offset points",
+        va="center", ha="right", fontsize=9
+    )
+
+# OPTIONAL: Dotted lines every 3rd category
+for i in range(0, len(final_index), 3):
+    axes_mirror[0].axhline(i - 0.5, color="grey", linestyle="--", alpha=0.6, zorder=1)
+    axes_mirror[1].axhline(i - 0.5, color="grey", linestyle="--", alpha=0.6, zorder=1)
+
+# Align x-limits for a consistent mirrored look
+max_left = cond1_aligned.max()
+max_right = cond2_aligned.max()
+axes_mirror[0].set_xlim(0, max_left * 1.1)
+axes_mirror[1].set_xlim(-max_right * 1.1, 0)
+
+plt.tight_layout()
+
+# 6. Render in Streamlit
+st.markdown("### Mirror Bar Chart: Condition Primary vs Condition Secondary")
+st.pyplot(fig_mirror)
+
+
 folder_path = "charts"
 if not os.path.exists(folder_path):
     os.makedirs(folder_path)
