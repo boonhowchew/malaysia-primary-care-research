@@ -163,7 +163,7 @@ with st.expander("Project Team Members"):
         """)
 
 st.markdown("### Flow Chart")
-st.image("Flow.png", caption="PRISMA Flow Chart", use_container_width=True)
+st.image("Flow.png", caption="PRISMA Flow Chart", width=400)
 
 st.subheader("Dataset Overview")
 st.write(f"Total Publications: {len(df)}")
@@ -260,6 +260,8 @@ fig4.update_traces(
     hovertemplate='<b>Journal Loc:</b> %{customdata[0]}<br><b>Journal Scope:</b> %{customdata[1]}<br>Count: %{value}<extra></extra>',
     textinfo="label+percent entry"
 )
+# Enlarge the sunburst chart:
+fig4.update_layout(width=900, height=700)  # Adjust dimensions as needed
 st.plotly_chart(fig4)
 
 st.markdown("### Additional Overview of Research Characteristics")
