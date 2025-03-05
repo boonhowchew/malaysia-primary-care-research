@@ -265,11 +265,112 @@ fig4.update_layout(width=800, height=650)  # Adjust dimensions as needed
 st.plotly_chart(fig4)
 
 st.markdown("### Additional Overview of Research Characteristics")
-st.image(
-    "Six_Histograms_Combined.png",
-    caption="Six Histograms of Article Type, Field of Study, Study Design, Level of Study, Quant Study Type, and Data Collection Methods",
-    use_container_width=True
-)
+# -------------------------
+# 1. Load Data
+# -------------------------
+@st.cache_data
+def load_data():
+    # Use the raw URL to your CSV on GitHub (ensure it points to your cleaned dataset)
+    url = "https://raw.githubusercontent.com/boonhowchew/malaysia-primary-care-research/main/REALQUAMI_Dataset_Merged.csv"
+    df = pd.read_csv(url, on_bad_lines='skip', engine='python', encoding='utf-8')
+    df['IDyear'] = pd.to_numeric(df['IDyear'], errors='coerce')
+    return df
+
+df = load_data()
+
+# -------------------------
+# 2. Merge Redundant Labels
+# -------------------------
+# For the 'Class' column
+if "Class" in df.columns:
+    df['Class'] = df['Class'].astype(str).str.strip().replace({
+        'mixed': 'Mixed',
+        'others': 'Others',
+        'qualitative': 'Qualitative (include case reports)',
+        'Qualitative (include case reports here)': 'Qualitative (include case reports)',
+        'quantitative': 'Quantitative (include case series)'
+    })
+
+# For the 'Level' column
+if "Level" in df.columns:
+    df['Level'] = df['Level'].astype(str).str.strip().replace({
+        'primary (include case reports)': 'Primary (include case reports, case series)',
+        'Primary (include case reports)': 'Primary (include case reports, case series)'
+    })
+
+# For the 'CatQuanti' column
+if "CatQuanti" in df.columns:
+    df['CatQuanti'] = df['CatQuanti'].astype(str).str.strip().replace({
+        'prevalence': 'Prevalence',
+        'etiologic': 'Etiologic'
+    })
+
+# For the 'DataCollect' column
+if "DataCollect" in df.columns:
+    df['DataCollect'] = df['DataCollect'].astype(str).str.strip().replace({
+        'cross-section': 'Cross-sectional',
+        'cross-sectional': 'Cross-sectional'
+    })
+
+# -------------------------
+# 3. Create "Period" Column
+# -------------------------
+df['Period'] = df['IDyear'].apply(lambda x: 'Early (1962-1999)' if x < 2000 else 'Recent (2000-2019)')
+
+# -------------------------
+# 4. Create Pivot Tables by Period for six variables
+# -------------------------
+def pivot_by_period(dataframe, col_name):
+    """Creates a pivot table with Period as index and the specified column's categories as columns."""
+    return dataframe.pivot_table(index='Period', columns=col_name, aggfunc='size', fill_value=0)
+
+pivot_article = pivot_by_period(df, 'Article')
+pivot_field   = pivot_by_period(df, 'Field')
+pivot_class   = pivot_by_period(df, 'Class')
+pivot_level   = pivot_by_period(df, 'Level')
+pivot_quanti  = pivot_by_period(df, 'CatQuanti')
+pivot_datac   = pivot_by_period(df, 'DataCollect')
+
+pivots = [
+    ("Article Type Distribution", pivot_article),
+    ("Field of Study Distribution", pivot_field),
+    ("Study Design (Class) Distribution", pivot_class),
+    ("Level of Study Distribution", pivot_level),
+    ("Quant Study Types Distribution", pivot_quanti),
+    ("Data Collection Methods Distribution", pivot_datac),
+]
+
+# -------------------------
+# 5. Plot the Six Stacked Bar Charts
+# -------------------------
+fig, axes = plt.subplots(nrows=3, ncols=2, figsize=(14, 18))
+axes = axes.flatten()
+
+for ax, (title, pivot_df) in zip(axes, pivots):
+    # Order columns so that subvariables are in descending order by overall count (largest at bottom)
+    ordered_cols = pivot_df.sum(axis=0).sort_values(ascending=False).index.tolist()
+    pivot_ordered = pivot_df[ordered_cols]
+    
+    # Compute total counts for each subvariable and create a rename mapping (e.g., "Case reports" -> "Case reports (45)")
+    col_sums = pivot_ordered.sum(axis=0)
+    rename_map = {col: f"{col} ({int(col_sums[col])})" for col in pivot_ordered.columns}
+    pivot_renamed = pivot_ordered.rename(columns=rename_map)
+    
+    # Calculate the total count for the chart (sum of all cells in the pivot table)
+    chart_total = pivot_df.values.sum()
+    
+    # Plot the stacked bar chart using the renamed pivot table
+    pivot_renamed.plot(kind='bar', stacked=True, ax=ax, colormap='tab20')
+    ax.set_title(f"{title}\n(Total: {int(chart_total)})", fontsize=11)
+    ax.set_xlabel("Period")
+    ax.set_ylabel("Number of Studies")
+    # Place legend in the top-left corner
+    ax.legend(loc='upper left', fontsize=8)
+    # Set x-axis tick labels horizontally
+    ax.set_xticklabels(ax.get_xticklabels(), rotation=0)
+
+plt.tight_layout()
+st.pyplot(fig)
 
 # -----------------------------------------------------------------------------
 # 7. MIRROR BAR CHART: Condition_primary vs Condition_secondary
