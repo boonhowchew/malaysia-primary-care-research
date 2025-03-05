@@ -491,3 +491,29 @@ if st.session_state["registered"]:
             file_name="LineGraph_TotalCounts.png",
             mime="image/png"
         )
+        
+# -----------------------------------------------------------------------------
+# Additional Chart: Mirror Bar Chart (Condition_primary vs Condition_secondary)
+# -----------------------------------------------------------------------------
+# (Your mirror bar chart code is already executed and displayed via st.pyplot(fig_mirror) above)
+
+# Now, save the mirror bar chart to the same folder ("charts") as your other charts
+folder_path = "charts"  # This folder is already used for saving other charts
+if not os.path.exists(folder_path):
+    os.makedirs(folder_path)
+
+# Save the mirror bar chart (replace 'fig_mirror' with the correct variable name if different)
+fig_mirror.savefig(f"{folder_path}/Mirror_Bar_Chart_Condition.png", dpi=300, bbox_inches='tight')
+
+# -----------------------------------------------------------------------------
+# Provide Download Button for the Mirror Bar Chart (only if registered)
+# -----------------------------------------------------------------------------
+if st.session_state["registered"]:
+    st.markdown("## Download Additional Charts")
+    with open(f"{folder_path}/Mirror_Bar_Chart_Condition.png", "rb") as file_chart:
+        st.download_button(
+            label="Download Mirror Bar Chart (Condition)",
+            data=file_chart,
+            file_name="Mirror_Bar_Chart_Condition.png",
+            mime="image/png"
+        )
