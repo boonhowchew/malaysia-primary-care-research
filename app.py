@@ -163,7 +163,7 @@ with st.expander("Project Team Members"):
         """)
 
 st.markdown("### Flow Chart")
-st.image("Flow.png", caption="PRISMA Flow Chart", width=500)
+st.image("Flow.png", caption="PRISMA Flow Chart", width=600)
 
 st.subheader("Dataset Overview")
 st.write(f"Total Publications: {len(df)}")
@@ -226,7 +226,7 @@ ax1.set_ylabel("Number of Publications")
 plt.tight_layout()
 st.pyplot(fig1)
 
-fig2, ax2 = plt.subplots(figsize=(8,6))
+fig2, ax2 = plt.subplots(figsize=(7,5))
 sns.countplot(y='Caspecialty', data=df, order=cat_list, ax=ax2)
 for p in ax2.patches:
     width = p.get_width()
@@ -240,7 +240,7 @@ plt.tight_layout()
 st.pyplot(fig2)
 
 df_line = df.groupby('IDyear')[['AuthorNum', 'InstitNum', 'AuthorOvNum', 'InstitOvNum']].sum().reset_index()
-fig3, ax3 = plt.subplots(figsize=(8,5))
+fig3, ax3 = plt.subplots(figsize=(7,4))
 for col in ['AuthorNum', 'InstitNum', 'AuthorOvNum', 'InstitOvNum']:
     sns.lineplot(data=df_line, x='IDyear', y=col, marker='o', label=col, ax=ax3)
 ax3.set_title("Total Counts of Authors, Institutions, Overseas Authors, and Overseas Institutions by Year")
