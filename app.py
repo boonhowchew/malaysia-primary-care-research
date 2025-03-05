@@ -270,7 +270,7 @@ median_values = agg_author['median']
 q1_values = agg_author['q1']
 q3_values = agg_author['q3']
 
-fig4, ax4 = plt.subplots(figsize=(7,5))
+fig4, ax4 = plt.subplots(figsize=(7,4))
 ax4.plot(years, median_values, marker='o', color='steelblue', label='Median AuthorNum')
 ax4.fill_between(years, q1_values, q3_values, color='steelblue', alpha=0.2, label='IQR (25%–75%)')
 ax4.set_title("Median ± IQR of AuthorNum by Year")
